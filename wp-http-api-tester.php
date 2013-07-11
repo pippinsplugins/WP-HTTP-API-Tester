@@ -50,7 +50,7 @@ class WP_HTTP_API_Tester {
 
 			self::$instance = new WP_HTTP_API_Tester;
 
-			if( ! is_admin() ) {
+			if ( ! is_admin() ) {
 				return;
 			}
 
@@ -93,8 +93,8 @@ class WP_HTTP_API_Tester {
 
 	public function process_request() {
 
-		if( empty( $_POST['data'] ) )
-			die(-1);
+		if ( empty( $_POST['data'] ) )
+			die( '-1' );
 
 		parse_str( $_POST['data'], $data );
 
@@ -106,17 +106,17 @@ class WP_HTTP_API_Tester {
 		);
 
 		// Make sure valid JSON was provided
-		if( ! self::is_json( $body ) ) {
+		if ( ! self::is_json( $body ) ) {
 			$response['errors']['invalid_json'] = __( 'The JSON you entered is invalid.', 'wp-http-api-tester' );
 		}
 
 		// Make sure valid URL was provided
-		if( ! self::is_url( $url ) ) {
+		if ( ! self::is_url( $url ) ) {
 			$response['errors']['invalid_url'] = __( 'The URL you entered is invalid.', 'wp-http-api-tester' );
 		}
 
 		// The provided data appears valid, attempt a query
-		if( empty( $response['errors'] ) ) {
+		if ( empty( $response['errors'] ) ) {
 
 			switch( $method ) {
 
@@ -126,11 +126,11 @@ class WP_HTTP_API_Tester {
 
 				case 'GET' :
 
-					$args    = (array)json_decode( $body );
+					$args    = (array) json_decode( $body );
 					$url     = add_query_arg( $args, $url );
 					$request = wp_remote_get( $url );
 
-					if( ! is_wp_error( $request ) ) {
+					if ( ! is_wp_error( $request ) ) {
 
 						$response['body']    = wp_remote_retrieve_body( $request );
 						$response['headers'] = wp_remote_retrieve_headers( $request );
@@ -154,11 +154,11 @@ class WP_HTTP_API_Tester {
 
 	private static function is_json( $string ) {
 		json_decode( $string );
-		return ( json_last_error() == JSON_ERROR_NONE );
+		return ( json_last_error() === JSON_ERROR_NONE );
 	}
 
 	private static function is_url( $string ) {
-		return filter_var( $string, FILTER_VALIDATE_URL ) !== FALSE;
+		return filter_var( $string, FILTER_VALIDATE_URL ) !== false;
 	}
 }
 add_action( 'plugins_loaded', array( 'WP_HTTP_API_Tester', 'instance' ) );
