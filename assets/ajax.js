@@ -3,6 +3,9 @@ jQuery(document).ready(function ($) {
 
 		e.preventDefault();
 
+		$('#wp-http-api-tester-response-wrapper').hide();
+		$('#wp-http-test-loader').show();
+
 		var $this = $(this),
 			data = {
 				action: 'http_api_test',
@@ -15,10 +18,8 @@ jQuery(document).ready(function ($) {
 			dataType: "json",
 			url: ajaxurl,
             success: function (response) {
+				$('#wp-http-test-loader').hide();
 				if( response ) {
-					if( $('#wp-http-api-tester-response-wrapper:visible') ) {
-						$('#wp-http-api-tester-response-wrapper').slideUp();
-					}
 					$('#wp-http-api-tester-response-wrapper').slideDown();
 					$('#response-message').html( response.message );
 					$('#response-code').html( response.code );

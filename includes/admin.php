@@ -61,6 +61,7 @@ class WP_HTTP_API_Tester_Admin {
 				</table>
 				<?php wp_nonce_field( 'wp-http-api-nonce', 'wp-http-api-nonce' ); ?>
 				<?php submit_button( __( 'Send Request', 'wp-http-api-tester' ) ); ?>
+				<img src="<?php echo admin_url( 'images/loading.gif' ); ?>" id="wp-http-test-loader" style="display:none"/>
 			</form>
 			<div id="wp-http-api-tester-response-wrapper" style="display:none">
 				<h4><?php _e( 'Response Data', 'wp-http-api-tester' ); ?></h4>
