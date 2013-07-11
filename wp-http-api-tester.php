@@ -125,6 +125,7 @@ class WP_HTTP_API_Tester {
 					break;
 
 				case 'GET' :
+				default    :
 
 					$args    = (array)json_decode( $body );
 					$url     = add_query_arg( $args, $url );
