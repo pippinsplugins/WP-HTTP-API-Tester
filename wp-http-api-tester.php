@@ -122,6 +122,21 @@ class WP_HTTP_API_Tester {
 
 				case 'POST' :
 
+					$args         = array();
+					$args['body'] = (array)json_decode( $body );
+					$request      = wp_remote_post( $url, $args );
+
+					if( ! is_wp_error( $request ) ) {
+
+						$response['body']    = wp_remote_retrieve_body( $request );
+						$response['headers'] = wp_remote_retrieve_headers( $request );
+						$response['code']    = wp_remote_retrieve_response_code( $request );
+						$response['message'] = wp_remote_retrieve_response_message( $request );
+
+					} else {
+						$response['error'] = $request;
+					}
+
 					break;
 
 				case 'GET' :
