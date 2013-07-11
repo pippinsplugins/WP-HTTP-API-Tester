@@ -22,7 +22,7 @@ class WP_HTTP_API_Tester {
 	 * @var string
 	 * @since 1.0
 	 */
-	private $path;
+	public static $path;
 
 	/**
 	 *  Plugin url
@@ -30,7 +30,7 @@ class WP_HTTP_API_Tester {
 	 * @var string
 	 * @since 1.0
 	 */
-	private $url;
+	public static $url;
 
 
 	/**
@@ -57,6 +57,8 @@ class WP_HTTP_API_Tester {
 			self::$instance->setup_vars();
 			self::$instance->includes();
 
+			add_action( 'admin_init', array( self::$instance, 'process_request' ) );
+
 		}
 		return self::$instance;
 	}
@@ -70,8 +72,8 @@ class WP_HTTP_API_Tester {
 	 */
 	private function setup_vars() {
 
-		$this->path = plugin_dir_path( __FILE__ );
-		$this->url  = plugin_dir_url( __FILE__ );
+		self::$path = plugin_dir_path( __FILE__ );
+		self::$url  = plugin_dir_url( __FILE__ );
 
 	}
 
@@ -85,8 +87,79 @@ class WP_HTTP_API_Tester {
 	private function includes() {
 		global $edd_options;
 
-		require_once  $this->path . 'includes/admin.php';
+		require_once self::$path . 'includes/admin.php';
 
+	}
+
+	public function process_request() {
+
+		if( ! isset( $_POST['wp-http-api-nonce'] ) )
+			return;
+
+		if( ! wp_verify_nonce( $_POST['wp-http-api-nonce'], 'wp-http-api-nonce' ) )
+			return;
+
+		$url      = sanitize_text_field( $_POST['request-url'] );
+		$method   = 'GET';
+		$body     = sanitize_text_field( stripslashes( $_POST['request-body'] ) );
+		$response = array(
+			'errors' => array()
+		);
+
+		// Make sure valid JSON was provided
+		if( ! self::is_json( $body ) ) {
+			$response['errors']['invalid_json'] = new WP_Error( 'invalid_json', __( 'The JSON you entered is invalid.', 'wp-http-api-tester' ) );
+		}
+
+		// Make sure valid URL was provided
+		if( ! self::is_url( $url ) ) {
+			$response['errors']['invalid_url'] = new WP_Error( 'invalid_url', __( 'The URL you entered is invalid.', 'wp-http-api-tester' ) );
+		}
+
+		// The provided data appears valid, attempt a query
+		if( empty( $response['errors'] ) ) {
+
+			switch( $method ) {
+
+				case 'POST' :
+
+					break;
+
+				case 'GET' :
+
+					$args    = (array)json_decode( $body );
+					$url     = add_query_arg( $args, $url );
+					$request = wp_remote_get( $url );
+
+					if( ! is_wp_error( $request ) ) {
+
+						$response['body']    = wp_remote_retrieve_body( $request );
+						$response['headers'] = wp_remote_retrieve_headers( $request );
+						$response['code']    = wp_remote_retrieve_response_code( $request );
+						$response['message'] = wp_remote_retrieve_response_message( $request );
+
+					} else {
+						$response['error'] = $request;
+					}
+
+					break;
+			}
+
+		}
+
+		// Send our response back
+		echo json_encode( $response );
+		exit;
+
+	}
+
+	private static function is_json( $string ) {
+		json_decode( $string );
+		return ( json_last_error() == JSON_ERROR_NONE );
+	}
+
+	private static function is_url( $string ) {
+		return filter_var( $string, FILTER_VALIDATE_URL ) !== FALSE;
 	}
 }
 add_action( 'plugins_loaded', array( 'WP_HTTP_API_Tester', 'instance' ) );

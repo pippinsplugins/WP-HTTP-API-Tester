@@ -3,7 +3,11 @@
 class WP_HTTP_API_Tester_Admin {
 
 	public function __construct() {
-		add_management_page(
+
+		global $wp_http_api_tester;
+
+		// Register our admin page
+		$wp_http_api_tester = add_management_page(
 			__( 'HTTP API Tester', 'wp-http-api-tester' ),
 			__( 'HTTP API Tester', 'wp-http-api-tester' ),
 			'manage_options',
@@ -13,6 +17,9 @@ class WP_HTTP_API_Tester_Admin {
 				'admin_page'
 			)
 		);
+
+		// Load our scripts
+		add_action( 'admin_enqueue_scripts', array( $this, 'scripts' ) );
 	}
 
 	public function admin_page() {
@@ -40,6 +47,7 @@ class WP_HTTP_API_Tester_Admin {
 						</td>
 					</tr>
 				</table>
+				<?php wp_nonce_field( 'wp-http-api-nonce', 'wp-http-api-nonce' ); ?>
 				<?php submit_button( __( 'Send Request', 'wp-http-api-tester' ) ); ?>
 			</form>
 			<h4><?php _e( 'Response Data', 'wp-http-api-tester' ); ?></h4>
@@ -61,6 +69,16 @@ class WP_HTTP_API_Tester_Admin {
 			</div>
 		</div>
 		<?php
+	}
+
+	public function scripts( $hook ) {
+
+		global $pagenow, $wp_http_api_tester;
+
+		if( $hook != $wp_http_api_tester )
+			return;
+
+		wp_enqueue_script( 'wp-http-api-tester', WP_HTTP_API_Tester::$url . 'assets/ajax.js', array( 'jquery' ) );
 	}
 
 }
