@@ -57,7 +57,7 @@ class WP_HTTP_API_Tester {
 			self::$instance->setup_vars();
 			self::$instance->includes();
 
-			add_action( 'admin_init', array( self::$instance, 'process_request' ) );
+			add_action( 'wp_ajax_http_api_test', array( self::$instance, 'process_request' ) );
 
 		}
 		return self::$instance;
