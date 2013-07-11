@@ -46,6 +46,7 @@ class WP_HTTP_API_Tester_Admin {
 						</th>
 						<td>
 							<input type="text" id="request-url" name="request-url" class="regular-text" value="http://api.hostip.info/get_json.php" />
+							<div class="description"><?php _e( 'The URL you want to send the request to.', 'wp-http-api-tester' ); ?></div>
 						</td>
 					</tr>
 					<tr valign="top">
