@@ -31,6 +31,17 @@ class WP_HTTP_API_Tester_Admin {
 				<table class="form-table">
 					<tr valign="top">
 						<th scope="row">
+							<label for="request-method"><?php _e( 'Method', 'wp-http-api-tester' ); ?></label>
+						</th>
+						<td>
+							<select id="request-method" name="request-method">
+								<option value="GET">GET</option>
+								<option value="POST">POST</option>
+							</select>
+						</td>
+					</tr>
+					<tr valign="top">
+						<th scope="row">
 							<label for="request-url"><?php _e( 'URL', 'wp-http-api-tester' ); ?></label>
 						</th>
 						<td>
