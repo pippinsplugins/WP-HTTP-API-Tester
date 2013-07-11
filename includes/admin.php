@@ -34,7 +34,7 @@ class WP_HTTP_API_Tester_Admin {
 							<label for="request-url"><?php _e( 'URL', 'wp-http-api-tester' ); ?></label>
 						</th>
 						<td>
-							<input type="text" id="request-url" name="request-url" class="regular-text" value="" />
+							<input type="text" id="request-url" name="request-url" class="regular-text" value="http://api.hostip.info/get_json.php" />
 						</td>
 					</tr>
 					<tr valign="top">
@@ -42,7 +42,7 @@ class WP_HTTP_API_Tester_Admin {
 							<label for="request-body"><?php _e( 'Body', 'wp-http-api-tester' ); ?></label>
 						</th>
 						<td>
-							<textarea id="request-body" name="request-body" class="large-textarea" cols="50" rows="10"></textarea>
+							<textarea id="request-body" name="request-body" class="large-textarea" cols="50" rows="10">{ "ip":"72.209.183.96"}</textarea>
 							<div class="description"><?php _e( 'Paste the data you wish to send in the remote request. It must be JSON.', 'wp-http-api-tester' ); ?></div>
 						</td>
 					</tr>
@@ -60,9 +60,27 @@ class WP_HTTP_API_Tester_Admin {
 						</td>
 					</tr>
 					<tr valign="top">
+						<th scope="row"><?php _e( 'Response Message', 'wp-http-api-tester' ); ?></th>
+						<td>
+							<div id="response-message"></div>
+						</td>
+					</tr>
+					<tr valign="top">
+						<th scope="row"><?php _e( 'Response Headers', 'wp-http-api-tester' ); ?></th>
+						<td>
+							<div id="response-headers"></div>
+						</td>
+					</tr>
+					<tr valign="top">
 						<th scope="row"><?php _e( 'Response Body', 'wp-http-api-tester' ); ?></th>
 						<td>
 							<div id="response-body"></div>
+						</td>
+					</tr>
+					<tr valign="top">
+						<th scope="row"><?php _e( 'Response Errors', 'wp-http-api-tester' ); ?></th>
+						<td>
+							<div id="response-errors"></div>
 						</td>
 					</tr>
 				</table>
