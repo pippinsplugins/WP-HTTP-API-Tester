@@ -93,27 +93,26 @@ class WP_HTTP_API_Tester {
 
 	public function process_request() {
 
-		if( ! isset( $_POST['wp-http-api-nonce'] ) )
-			return;
+		if( empty( $_POST['data'] ) )
+			die(-1);
 
-		if( ! wp_verify_nonce( $_POST['wp-http-api-nonce'], 'wp-http-api-nonce' ) )
-			return;
+		parse_str( $_POST['data'], $data );
 
-		$url      = sanitize_text_field( $_POST['request-url'] );
+		$url      = sanitize_text_field( $data['request-url'] );
 		$method   = 'GET';
-		$body     = sanitize_text_field( stripslashes( $_POST['request-body'] ) );
+		$body     = sanitize_text_field( stripslashes( $data['request-body'] ) );
 		$response = array(
 			'errors' => array()
 		);
 
 		// Make sure valid JSON was provided
 		if( ! self::is_json( $body ) ) {
-			$response['errors']['invalid_json'] = new WP_Error( 'invalid_json', __( 'The JSON you entered is invalid.', 'wp-http-api-tester' ) );
+			$response['errors']['invalid_json'] = __( 'The JSON you entered is invalid.', 'wp-http-api-tester' );
 		}
 
 		// Make sure valid URL was provided
 		if( ! self::is_url( $url ) ) {
-			$response['errors']['invalid_url'] = new WP_Error( 'invalid_url', __( 'The URL you entered is invalid.', 'wp-http-api-tester' ) );
+			$response['errors']['invalid_url'] = __( 'The URL you entered is invalid.', 'wp-http-api-tester' );
 		}
 
 		// The provided data appears valid, attempt a query
