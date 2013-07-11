@@ -50,8 +50,8 @@ class WP_HTTP_API_Tester_Admin {
 				<?php wp_nonce_field( 'wp-http-api-nonce', 'wp-http-api-nonce' ); ?>
 				<?php submit_button( __( 'Send Request', 'wp-http-api-tester' ) ); ?>
 			</form>
-			<h4><?php _e( 'Response Data', 'wp-http-api-tester' ); ?></h4>
-			<div id="wp-http-api-tester-response-wrapper">
+			<div id="wp-http-api-tester-response-wrapper" style="display:none">
+				<h4><?php _e( 'Response Data', 'wp-http-api-tester' ); ?></h4>
 				<table class="form-table">
 					<tr valign="top">
 						<th scope="row"><?php _e( 'Response Code', 'wp-http-api-tester' ); ?></th>
