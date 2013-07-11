@@ -24,6 +24,14 @@ class WP_HTTP_API_Tester_Admin {
 
 	public function admin_page() {
 		?>
+		<style>
+		pre {outline: 1px solid #ccc; padding: 5px; margin: 5px; }
+		.string { color: green; }
+		.number { color: darkorange; }
+		.boolean { color: blue; }
+		.null { color: magenta; }
+		.key { color: red; }
+		</style>
 		<div class="wrap">
 			<?php screen_icon( 'tools' ); ?>
 			<h2><?php _e( 'HTTP API Tester', 'wp-http-api-tester' ); ?></h2>
