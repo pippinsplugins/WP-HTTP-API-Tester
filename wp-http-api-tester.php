@@ -99,7 +99,7 @@ class WP_HTTP_API_Tester {
 		parse_str( $_POST['data'], $data );
 
 		$url      = sanitize_text_field( $data['request-url'] );
-		$method   = 'GET';
+		$method   = $data['request-method'];
 		$body     = sanitize_text_field( stripslashes( $data['request-body'] ) );
 		$response = array(
 			'errors' => array()
