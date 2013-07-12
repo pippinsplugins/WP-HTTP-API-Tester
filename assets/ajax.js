@@ -24,7 +24,7 @@ jQuery(document).ready(function ($) {
 					$('#wp-http-api-tester-response-wrapper').slideDown();
 					$('#response-message').html( response.message );
 					$('#response-code').html( response.code );
-					$('#response-body').html( '<pre>' + wp_http_api_highlight_syntax( response.body ) + '</pre>' );
+					$('#response-body').html( response.body );
 					$('#response-errors').html('');
 					$("#response-headers").html('');
 					$.each(response.headers, function(k, v){
@@ -41,22 +41,3 @@ jQuery(document).ready(function ($) {
 
 	});
 });
-
-function wp_http_api_highlight_syntax(json) {
-    json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-    return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
-        var cls = 'number';
-        if (/^"/.test(match)) {
-            if (/:$/.test(match)) {
-                cls = 'key';
-            } else {
-                cls = 'string';
-            }
-        } else if (/true|false/.test(match)) {
-            cls = 'boolean';
-        } else if (/null/.test(match)) {
-            cls = 'null';
-        }
-        return '<span class="' + cls + '">' + match + '</span>';
-    });
-}
