@@ -4,9 +4,6 @@ class WP_HTTP_API_Tester_Admin {
  
   public function __construct() {
  
-		global $wp_http_api_tester;
- 
- 
     	//add the management page and hook into admin_menu 
 		// http://wordpress.org/support/topic/take-2-minutes-and-help-me-out#post-867490
 		add_action( 'admin_menu', array( $this, 'management_page') );
@@ -18,7 +15,10 @@ class WP_HTTP_API_Tester_Admin {
 	}
 	
 	public function management_page(){
-				// Register our admin page
+
+		global $wp_http_api_tester;
+		
+		// Register our admin page
 		$wp_http_api_tester = add_management_page(
 			__( 'HTTP API Tester', 'wp-http-api-tester' ),
 			__( 'HTTP API Tester', 'wp-http-api-tester' ),
